@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    <form action="/add_book" method="post">
+    <div class="flex flex-col">
+
+        <label for="name">帳本名稱</label>
+        <input type="text" id="name" name="name" class="border text-lg">
+
+        <button type="submit" class="p-2 bg-gray-400 text-white">新增</button>
+
+    </div>
+    </form>
+{% endblock %}

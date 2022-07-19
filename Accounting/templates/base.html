@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>登入 | 記帳軟體</title>
+    <title>記帳軟體</title>
 </head>
 <body class="flex flex-col min-w-screen min-h-screen">
 {% with messages = get_flashed_messages() %}
@@ -16,6 +16,9 @@
 {% endwith %}
 <div class="flex flex-row h-12 items-center justify-end px-4 gap-2 bg-pink-100">
     {% if current_user.is_authenticated %}
+        <a href="{{ url_for('main.books') }}" class="underline text-md">
+            帳本
+        </a>
         <a href="{{ url_for('main.profile') }}" class="underline text-md">
             個人資料
         </a>
