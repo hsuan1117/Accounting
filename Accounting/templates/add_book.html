@@ -1,13 +1,42 @@
 {% extends "base.html" %}
 {% block content %}
-    <form action="/add_book" method="post">
-    <div class="flex flex-col">
+    <form class="space-y-8 divide-y divide-gray-200 h-full px-16 flex justify-center items-center w-full" action="/add_book"
+          method="post">
+        <div class="space-y-8 divide-y divide-gray-200 flex flex-col w-full">
+            <div>
+                <div>
+                    <h3 class="text-xl leading-6 font-medium text-gray-900">帳本設定</h3>
+                    <p class="mt-1 text-sm text-gray-500">帳本的基礎資料</p>
+                </div>
 
-        <label for="name">帳本名稱</label>
-        <input type="text" id="name" name="name" class="border text-lg">
+                <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <div class="sm:col-span-4">
+                        <label for="name" class="block text-sm font-medium text-gray-700"> 帳本名稱 </label>
+                        <div class="mt-1 flex rounded-md shadow-sm">
+                            <input type="text" name="name" id="name"
+                                   class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-md sm:text-sm border-gray-300">
+                        </div>
+                    </div>
 
-        <button type="submit" class="p-2 bg-gray-400 text-white">新增</button>
+                    <div class="sm:col-span-6">
+                        <label for="description" class="block text-sm font-medium text-gray-700"> 描述 </label>
+                        <p class="text-sm text-gray-500">帳本紀錄詳細描述</p>
+                        <div class="mt-1">
+                            <textarea id="description" name="description" rows="5"
+                                      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-5">
+                <div class="flex justify-end">
+                    <button type="submit"
+                            class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        新增
+                    </button>
+                </div>
+            </div>
+        </div>
 
-    </div>
     </form>
 {% endblock %}

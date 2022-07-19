@@ -34,8 +34,9 @@ def add_book():
 @login_required
 def add_book_post():
     name = request.form['name']
+    description = request.form['description']
 
-    new_book = Book(name=name, user_id=current_user.id)
+    new_book = Book(name=name, description=description, user_id=current_user.id)
 
     db.session.add(new_book)
     db.session.commit()
