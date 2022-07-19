@@ -18,3 +18,4 @@ class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     name = db.Column(db.String(100))
+    description = db.Column(db.String(100), nullable=True)
