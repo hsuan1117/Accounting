@@ -22,3 +22,5 @@
 
 # TODOs
 * [X] Flask Migration: https://flask-migrate.readthedocs.io/en/latest/
+* [] 設定帳本
+* [] 修改帳目

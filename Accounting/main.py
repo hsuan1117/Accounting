@@ -77,4 +77,4 @@ def add_transaction_post(book_id):
     db.session.add(new_transaction)
     db.session.commit()
 
-    return redirect(url_for('main.books'))
+    return redirect(url_for('main.show_book', book_id=book_id))
