@@ -43,4 +43,4 @@ class Item(db.Model):
     name = db.Column(db.String(100))
     price = db.Column(db.String(100))
 
-    transaction = db.relationship('Transaction', backref='item')
+    # transaction = db.relationship('Transaction', backref='item')

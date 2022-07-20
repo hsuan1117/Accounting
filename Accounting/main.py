@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, abort
 from flask_login import login_required, current_user
 
 from . import db
@@ -42,3 +42,16 @@ def add_book_post():
     db.session.commit()
 
     return redirect(url_for('main.books'))
+
+
+@main.route('/show_book')
+@login_required
+def show_book():
+    book_id = int(request.args.get('book'))
+
+    book = Book.query.filter_by(id=book_id).first()
+
+    if book_id not in list(map(lambda b: b.id, current_user.books)):
+        abort(403)
+
+    return render_template('show_book.html', book=book)
