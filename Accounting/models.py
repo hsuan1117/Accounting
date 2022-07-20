@@ -21,6 +21,8 @@ class Book(db.Model):
     name = db.Column(db.String(100))
     description = db.Column(db.String(100), nullable=True)
 
+    transactions = db.relationship('Transaction', backref='book')
+
 
 class Transaction(db.Model):
     __tablename__ = 'transactions'
@@ -32,7 +34,7 @@ class Transaction(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
-    book = db.relationship('Book', backref='transaction')
+    # book = db.relationship('Book', backref='transaction')
     items = db.relationship('Item', backref='transaction')
 
 

@@ -24,13 +24,13 @@ def books():
     return render_template('books.html', user=current_user)
 
 
-@main.route('/add_book')
+@main.route('/books/add')
 @login_required
 def add_book():
     return render_template('add_book.html')
 
 
-@main.route('/add_book', methods=["POST"])
+@main.route('/books', methods=["POST"])
 @login_required
 def add_book_post():
     name = request.form['name']
@@ -44,36 +44,33 @@ def add_book_post():
     return redirect(url_for('main.books'))
 
 
-@main.route('/show_book')
+@main.route('/books/<book_id>')
 @login_required
-def show_book():
-    book_id = int(request.args.get('book'))
-
+def show_book(book_id):
     book = Book.query.filter_by(id=book_id).first()
 
-    if book_id not in list(map(lambda b: b.id, current_user.books)):
+    if int(book_id) not in list(map(lambda b: b.id, current_user.books)):
         abort(403)
 
     return render_template('show_book.html', book=book)
 
-@main.route('/add_transaction')
+
+@main.route('/books/<book_id>/transactions')
 @login_required
-def add_transaction():
-    return render_template('add_transaction.html')
+def add_transaction(book_id):
+    return render_template('add_transaction.html', book_id=book_id)
 
 
-@main.route('/add_transaction', methods=["POST"])
+@main.route('/books/<book_id>/transactions/add', methods=["POST"])
 @login_required
-def add_transaction_post():
+def add_transaction_post(book_id):
     name = request.form['name']
     location = request.form['location']
     price = str(request.form['price'])
-    book_id = str(request.form['book_id'])
 
-    new_transaction = Transaction(name=name, location=location, price=price,book_id=book_id)
+    new_transaction = Transaction(name=name, location=location, price=price, book_id=book_id)
 
     db.session.add(new_transaction)
     db.session.commit()
 
     return redirect(url_for('main.books'))
-

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-    <form class="space-y-8 divide-y divide-gray-200 h-full px-16 flex justify-center items-center w-full" action="/add_book"
+    <form class="space-y-8 divide-y divide-gray-200 h-full px-16 flex justify-center items-center w-full"
+          action="{{ url_for('main.add_book_post') }}"
           method="post">
         <div class="space-y-8 divide-y divide-gray-200 flex flex-col w-full">
             <div>
