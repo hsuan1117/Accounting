@@ -71,8 +71,10 @@ def add_transaction_post(book_id):
     name = request.form['name']
     location = request.form['location']
     price = str(request.form['price'])
+    categories = map(lambda c: TransactionCategory.query.filter_by(id=c).first(), request.form.getlist('categories'))
 
     new_transaction = Transaction(name=name, location=location, price=price, book_id=book_id)
+    for c in categories: new_transaction.categories.append(c)
 
     db.session.add(new_transaction)
     db.session.commit()
@@ -103,4 +105,3 @@ def add_transaction_category_post():
     db.session.commit()
 
     return redirect(url_for('main.show_categories'))
-

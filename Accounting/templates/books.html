@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="w-full h-full flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div class="w-full flex justify-end my-4 border-b pb-2 gap-2">
+        <div class="w-full flex justify-end my-4 border-b pb-2">
             <a href="{{ url_for('main.add_book') }}" class="rounded px-3 py-2 bg-indigo-500 text-white">➕ 新增帳本</a>
-            <a href="{{ url_for('main.add_transaction_category') }}" class="rounded px-3 py-2 bg-indigo-500 text-white">➕ 新增類別</a>
         </div>
         <ul role="list" class="w-full grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {% for book in current_user.books %}

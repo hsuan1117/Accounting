@@ -32,6 +32,17 @@
                                    class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-md sm:text-sm border-gray-300">
                         </div>
                     </div>
+
+                    <div class="sm:col-span-4">
+                        <label for="description" class="block text-sm font-medium text-gray-700"> 交易類別 </label>
+                        <p class="text-sm text-gray-500">選擇這筆交易的類別</p>
+                        <div class="mt-1">
+                            {% for transaction_category in current_user.transaction_categories %}
+                                <input name="categories" class="rounded border-gray-400 mr-1" type="checkbox" value="{{ transaction_category.id }}" id="c{{ transaction_category.id }}">
+                                <label class="text-lg" for="c{{ transaction_category.id }}">{{ transaction_category.title }}</label>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="pt-5">

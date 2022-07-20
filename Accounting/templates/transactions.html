@@ -4,8 +4,11 @@
         <div class="text-4xl">
             {{ book.name }}
         </div>
-        <div class="w-full flex justify-end my-4 border-b pb-2">
-            <a href="{{ url_for('main.add_transaction', book_id=book.id) }}" class="rounded px-3 py-2 bg-indigo-500 text-white">➕ 新增帳目</a>
+        <div class="w-full flex justify-end my-4 border-b pb-2 gap-2">
+            <a href="{{ url_for('main.add_transaction', book_id=book.id) }}"
+               class="rounded px-3 py-2 bg-indigo-500 text-white">➕ 新增帳目</a>
+            <a href="{{ url_for('main.add_transaction_category') }}" class="rounded px-3 py-2 bg-indigo-500 text-white">➕
+                新增類別</a>
         </div>
 
         <ul role="list" class="w-full grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -21,6 +24,11 @@
                         <p class="mt-1 text-gray-500 text-sm truncate">📍 {{ transaction.location }}</p>
                         <p class="mt-1 text-gray-500 text-sm truncate">💰 {{ transaction.price }}</p>
                         <p class="mt-1 text-gray-500 text-sm truncate">📅 {{ transaction.created_at }}</p>
+                        <div class="mt-1 text-gray-500 text-sm truncate flex flex-row">
+                            {% for category in transaction.categories %}
+                                <div class="bg-green-400 rounded-xl p-1 ml-1 text-white">{{ category.title }}</div>
+                            {% endfor %}
+                        </div>
                     </div>
                     <!--
                     <img class="w-10 h-10 bg-gray-300 rounded-full flex-shrink-0"
