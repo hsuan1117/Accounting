@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, abort
 from flask_login import login_required, current_user
 
 from . import db
-from .models import Book
+from .models import Book, Transaction
 
 main = Blueprint('main', __name__)
 
@@ -55,3 +55,25 @@ def show_book():
         abort(403)
 
     return render_template('show_book.html', book=book)
+
+@main.route('/add_transaction')
+@login_required
+def add_transaction():
+    return render_template('add_transaction.html')
+
+
+@main.route('/add_transaction', methods=["POST"])
+@login_required
+def add_transaction_post():
+    name = request.form['name']
+    location = request.form['location']
+    price = str(request.form['price'])
+    book_id = str(request.form['book_id'])
+
+    new_transaction = Transaction(name=name, location=location, price=price,book_id=book_id)
+
+    db.session.add(new_transaction)
+    db.session.commit()
+
+    return redirect(url_for('main.books'))
+
