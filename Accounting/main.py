@@ -52,18 +52,22 @@ def show_book(book_id):
     if int(book_id) not in list(map(lambda b: b.id, current_user.books)):
         abort(403)
 
-    return render_template('show_book.html', book=book)
+    return render_template('transactions.html', book=book)
 
 
 @main.route('/books/<book_id>/transactions')
 @login_required
 def add_transaction(book_id):
+    if int(book_id) not in list(map(lambda b: b.id, current_user.books)):
+        abort(403)
     return render_template('add_transaction.html', book_id=book_id)
 
 
 @main.route('/books/<book_id>/transactions/add', methods=["POST"])
 @login_required
 def add_transaction_post(book_id):
+    if int(book_id) not in list(map(lambda b: b.id, current_user.books)):
+        abort(403)
     name = request.form['name']
     location = request.form['location']
     price = str(request.form['price'])
