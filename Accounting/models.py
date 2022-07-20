@@ -37,7 +37,7 @@ class Transaction(db.Model):
 
 
 class Item(db.Model):
-    __tablename__ = 'transactions'
+    __tablename__ = 'items'
     id = db.Column(db.Integer, primary_key=True)
     transaction_id = db.Column(db.Integer, db.ForeignKey('transactions.id'))
     name = db.Column(db.String(100))
