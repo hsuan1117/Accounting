@@ -21,4 +21,4 @@
 * price
 
 # TODOs
-* Flask Migration: https://flask-migrate.readthedocs.io/en/latest/
+* [X] Flask Migration: https://flask-migrate.readthedocs.io/en/latest/
