@@ -11,6 +11,14 @@
             <div class="space-y-8 divide-y divide-gray-200 flex flex-col w-full">
                 <div>
                     <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <div class="sm:col-span-4 flex items-center">
+                            <label for="emoji" class="sr-only"> 帳目Emoji </label>
+                            <input type="text" name="emoji" id="emoji" class="border-0 w-12 h-8 rounded mr-2 bg-gray-200" readonly/>
+                            <button type="button" id="pick_emoji"
+                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                選擇帳目類別Emoji
+                            </button>
+                        </div>
                         <div class="sm:col-span-4">
                             <label for="title" class="block text-sm font-medium text-gray-700"> 帳目類別名稱 </label>
                             <div class="mt-1 flex rounded-md shadow-sm">
@@ -29,7 +37,19 @@
                     </div>
                 </div>
             </div>
-
         </form>
     </div>
+    <script>
+        let popup = picmoPopup.createPopup({}, {
+            referenceElement: document.querySelector('#pick_emoji'),
+            triggerElement: document.querySelector('#pick_emoji')
+        })
+        document.querySelector('#pick_emoji').addEventListener("click", () => {
+            popup.toggle()
+        })
+        popup.addEventListener('emoji:select', selection => {
+            console.log('Selected emoji: ', selection);
+            document.querySelector("#emoji").value = selection.emoji
+        });
+    </script>
 {% endblock %}

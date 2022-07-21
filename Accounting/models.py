@@ -52,6 +52,7 @@ class TransactionCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     title = db.Column(db.String(100))
+    emoji = db.Column(db.String(100))
 
 
 category_transaction = db.Table(

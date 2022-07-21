@@ -92,15 +92,16 @@ def show_categories():
 @main.route('/categories/transaction')
 @login_required
 def add_transaction_category():
-    return render_template('categories/add_transaction.html')
+    return render_template('categories/add_transaction_category.html')
 
 
 @main.route('/categories/transaction', methods=["POST"])
 @login_required
 def add_transaction_category_post():
     title = request.form['title']
+    emoji = request.form['emoji']
 
-    new_category = TransactionCategory(title=title, user_id=current_user.id)
+    new_category = TransactionCategory(title=title, user_id=current_user.id, emoji=emoji)
 
     db.session.add(new_category)
     db.session.commit()
