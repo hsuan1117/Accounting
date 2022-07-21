@@ -60,7 +60,8 @@ def show_book(book_id):
 def add_transaction(book_id):
     if int(book_id) not in list(map(lambda b: b.id, current_user.books)):
         abort(403)
-    return render_template('add_transaction.html', book_id=book_id)
+    book = Book.query.filter_by(id=book_id).first()
+    return render_template('add_transaction.html', book=book)
 
 
 @main.route('/books/<book_id>/transactions/add', methods=["POST"])

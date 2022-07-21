@@ -1,14 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="w-full h-full flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div class="text-4xl">
-            {{ book.name }}
-        </div>
-        <div class="w-full flex justify-end my-4 border-b pb-2 gap-2">
-            <a href="{{ url_for('main.add_transaction', book_id=book.id) }}"
-               class="rounded px-3 py-2 bg-indigo-500 text-white">➕ 新增帳目</a>
-            <a href="{{ url_for('main.add_transaction_category') }}" class="rounded px-3 py-2 bg-indigo-500 text-white">➕
-                新增類別</a>
+    <div class="w-full min-h-full flex flex-col items-center py-6 px-4 bg-gray-100">
+        <div class="w-full flex justify-between items-center my-4 border-b pb-5 gap-2 border-gray-400">
+            <h3 class="text-2xl leading-6 font-medium text-gray-900">💼 {{ book.name }}</h3>
+            <div class="h-full flex justify-center items-center">
+                <a href="{{ url_for('main.add_transaction', book_id=book.id) }}"
+                   class="sm:ml-4 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    新增帳目
+                </a>
+                <a href="{{ url_for('main.add_transaction_category') }}"
+                   class="sm:ml-4 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    新增類別
+                </a>
+            </div>
         </div>
 
         <ul role="list" class="w-full grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
