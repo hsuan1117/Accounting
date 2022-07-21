@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, abort
 from flask_login import login_required, current_user
 
 from . import db
-from .models import Book, Transaction, TransactionCategory, Item
+from .models import Book, Transaction, TransactionCategory, Item, ItemCategory
 
 main = Blueprint('main', __name__)
 
@@ -110,6 +110,26 @@ def add_transaction_category_post():
     emoji = request.form['emoji']
 
     new_category = TransactionCategory(title=title, user_id=current_user.id, emoji=emoji)
+
+    db.session.add(new_category)
+    db.session.commit()
+
+    return redirect(url_for('main.show_categories'))
+
+
+@main.route('/categories/item')
+@login_required
+def add_item_category():
+    return render_template('categories/add_item_category.html')
+
+
+@main.route('/categories/item', methods=["POST"])
+@login_required
+def add_item_category_post():
+    title = request.form['title']
+    emoji = request.form['emoji']
+
+    new_category = ItemCategory(title=title, user_id=current_user.id, emoji=emoji)
 
     db.session.add(new_category)
     db.session.commit()

@@ -2,25 +2,25 @@
 {% block content %}
     <div class="w-full min-h-full flex flex-col items-center py-6 px-4 bg-gray-100">
         <div class="w-full flex justify-between items-center my-4 border-b pb-5 gap-2 border-gray-400">
-            <h3 class="text-2xl leading-6 font-medium text-gray-900">新增 帳目類別</h3>
+            <h3 class="text-2xl leading-6 font-medium text-gray-900">新增 物品類別</h3>
         </div>
 
         <form class="space-y-8 divide-y divide-gray-200 h-full px-16 flex justify-center items-center w-full"
-              action="{{ url_for('main.add_transaction_category_post') }}"
+              action="{{ url_for('main.add_item_category_post') }}"
               method="post">
             <div class="space-y-8 divide-y divide-gray-200 flex flex-col w-full">
                 <div>
                     <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                         <div class="sm:col-span-4 flex items-center">
-                            <label for="emoji" class="sr-only"> 帳目Emoji </label>
+                            <label for="emoji" class="sr-only"> 物品類別Emoji </label>
                             <input type="text" name="emoji" id="emoji" class="border-0 w-12 h-8 rounded mr-2 bg-gray-200" readonly/>
                             <button type="button" id="pick_emoji"
                                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                選擇帳目類別Emoji
+                                選擇物品類別Emoji
                             </button>
                         </div>
                         <div class="sm:col-span-4">
-                            <label for="title" class="block text-sm font-medium text-gray-700"> 帳目類別名稱 </label>
+                            <label for="title" class="block text-sm font-medium text-gray-700"> 物品類別名稱 </label>
                             <div class="mt-1 flex rounded-md shadow-sm">
                                 <input type="text" name="title" id="title"
                                        class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-md sm:text-sm border-gray-300">

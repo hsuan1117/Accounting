@@ -13,7 +13,7 @@ class User(UserMixin, db.Model):
 
     books = db.relationship('Book', backref='user')
     transaction_categories = db.relationship('TransactionCategory', backref='user')
-
+    item_categories = db.relationship('ItemCategory', backref='user')
 
 class Book(db.Model):
     __tablename__ = 'books'
@@ -39,14 +39,6 @@ class Transaction(db.Model):
     categories = db.relationship('TransactionCategory', secondary='category_transaction', backref='transactions')
 
 
-class Item(db.Model):
-    __tablename__ = 'items'
-    id = db.Column(db.Integer, primary_key=True)
-    transaction_id = db.Column(db.Integer, db.ForeignKey('transactions.id'))
-    name = db.Column(db.String(100))
-    price = db.Column(db.String(100))
-
-
 class TransactionCategory(db.Model):
     __tablename__ = 'transaction_categories'
     id = db.Column(db.Integer, primary_key=True)
@@ -61,3 +53,26 @@ category_transaction = db.Table(
     db.Column('category_id', db.Integer, db.ForeignKey('transaction_categories.id'))
 )
 
+
+class Item(db.Model):
+    __tablename__ = 'items'
+    id = db.Column(db.Integer, primary_key=True)
+    transaction_id = db.Column(db.Integer, db.ForeignKey('transactions.id'))
+    name = db.Column(db.String(100))
+    price = db.Column(db.String(100))
+    categories = db.relationship('ItemCategory', secondary='category_item', backref='items')
+
+
+class ItemCategory(db.Model):
+    __tablename__ = 'item_categories'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    title = db.Column(db.String(100))
+    emoji = db.Column(db.String(100))
+
+
+category_item = db.Table(
+    'category_item',
+    db.Column('item_id', db.Integer, db.ForeignKey('items.id')),
+    db.Column('category_id', db.Integer, db.ForeignKey('item_categories.id'))
+)
