@@ -7,7 +7,8 @@
         </div>
         <form class="space-y-8 divide-y divide-gray-200 h-full px-16 flex justify-center items-center w-full"
               action="{{ url_for('main.add_transaction_post', book_id=book.id) }}"
-              method="post">
+              method="post"
+              id="transaction_form">
             <div class="space-y-8 divide-y divide-gray-200 flex flex-col w-full">
                 <div>
                     <div>
@@ -39,6 +40,14 @@
                         </div>
 
                         <div class="sm:col-span-4">
+                            <div class="flex items-center gap-2">
+                                <p class="block text-sm font-medium text-gray-700"> 支出明細 </p>
+                                <p class="block text-sm font-medium text-gray-700 cursor-pointer" id="add_item"> ➕ </p>
+                            </div>
+                            <div class="mt-1 flex flex-col rounded-md shadow-sm" id="items-part"></div>
+                        </div>
+
+                        <div class="sm:col-span-4">
                             <label for="description" class="block text-sm font-medium text-gray-700"> 交易類別 </label>
                             <p class="text-sm text-gray-500">選擇這筆交易的類別</p>
                             <div class="mt-1">
@@ -61,6 +70,7 @@
                                 {% endfor %}
                             </div>
                         </div>
+                        <input type="hidden" name="items" id="items"/>
                     </div>
                 </div>
                 <div class="pt-5">
@@ -72,7 +82,54 @@
                     </div>
                 </div>
             </div>
-
         </form>
     </div>
+    <script>
+        let current_items_cnt = 0
+        let removed_item = []
+        $("#add_item").on("click", () => {
+            current_items_cnt++
+            /* Item: name price */
+            $('#items-part').append(`
+                <div class="bg-gray-200 shadow-lg my-2 px-4 py-2 pb-4 flex flex-col" id="item_${current_items_cnt}">
+                    <div class="mt-1 flex justify-end items-center rounded-md shadow-sm">
+                        <span class="text-sm mr-2">(ID: ${current_items_cnt})</span>
+                        <button class="cursor-pointer inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                onclick="removeItem(${current_items_cnt})">
+                            刪除
+                        </button>
+                    </div>
+                    <label for="item_${current_items_cnt}_name" class="block text-sm font-medium text-gray-700"> 細項名稱 </label>
+                    <div class="mt-1 flex rounded-md shadow-sm">
+                        <input type="text" name="" id="item_${current_items_cnt}_name" class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-md sm:text-sm border-gray-300"/>
+                    </div>
+                    <label for="item_${current_items_cnt}_price" class="mt-2 block text-sm font-medium text-gray-700"> 細項金額 </label>
+                    <div class="mt-1 flex rounded-md shadow-sm">
+                        <input type="number" name="" id="item_${current_items_cnt}_price" class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-md sm:text-sm border-gray-300"/>
+                    </div>
+                </div>
+            `)
+        })
+
+        function removeItem(index) {
+            removed_item.push(index)
+            $("#item_" + index).remove()
+        }
+
+        $("#transaction_form").submit(() => {
+            let arr = []
+            for (let i = 1; i <= current_items_cnt; i++) {
+                if(removed_item.includes(i)) continue;
+                const name = $(`#item_${i}_name`).val(),
+                    price = $(`#item_${i}_price`).val();
+
+                arr.push({
+                    name,
+                    price
+                })
+            }
+            $("#items").val(JSON.stringify(arr))
+            return true;
+        })
+    </script>
 {% endblock %}

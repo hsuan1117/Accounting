@@ -1,8 +1,10 @@
+import json
+
 from flask import Blueprint, render_template, redirect, url_for, request, abort
 from flask_login import login_required, current_user
 
 from . import db
-from .models import Book, Transaction, TransactionCategory
+from .models import Book, Transaction, TransactionCategory, Item
 
 main = Blueprint('main', __name__)
 
@@ -71,12 +73,18 @@ def add_transaction_post(book_id):
         abort(403)
     name = request.form['name']
     location = request.form['location']
-    price = str(request.form['price'])
-    categories = map(lambda c: TransactionCategory.query.filter_by(id=c).first(), request.form.getlist('categories'))
+    new_transaction = Transaction(name=name, location=location, price=0, book_id=book_id)
 
-    new_transaction = Transaction(name=name, location=location, price=price, book_id=book_id)
+    items = json.loads(request.form['items'])
+    for item in items:
+        new_item = Item(name=item["name"], price=item["price"])
+        new_transaction.items.append(new_item)
+        new_transaction.price += int(item["price"])
+
+    categories = map(lambda c: TransactionCategory.query.filter_by(id=c).first(), request.form.getlist('categories'))
     for c in categories: new_transaction.categories.append(c)
 
+    db.session.add_all(new_transaction.items)
     db.session.add(new_transaction)
     db.session.commit()
 
