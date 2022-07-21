@@ -139,6 +139,22 @@ def add_item_category_post():
     return redirect(url_for('main.show_categories'))
 
 
+@main.route('/categories/item/<category_id>')
+@login_required
+def show_item_category(category_id):
+    category = ItemCategory.query.filter_by(id=category_id).first()
+    items = Item.query.filter(Item.categories.any(id=category_id)).all()
+    return render_template('categories/show_item_category.html', category=category, items=items)
+
+
+@main.route('/categories/transaction/<category_id>')
+@login_required
+def show_transaction_category(category_id):
+    category = TransactionCategory.query.filter_by(id=category_id).first()
+    transactions = Transaction.query.filter(Transaction.categories.any(id=category_id)).all()
+    return render_template('categories/show_transaction_category.html', category=category, transactions=transactions)
+
+
 @main.route('/books/<book_id>/transactions/<transaction_id>')
 @login_required
 def show_items(book_id, transaction_id):
@@ -183,3 +199,5 @@ def add_item_post(book_id, transaction_id):
     db.session.commit()
 
     return redirect(url_for('main.show_book', book_id=book_id))
+
+

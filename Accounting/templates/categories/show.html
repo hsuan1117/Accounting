@@ -23,7 +23,8 @@
                     <li>
                         <div class="block hover:bg-gray-50">
                             <div class="px-4 py-4 sm:px-6">
-                                <div class="flex items-center justify-between">
+                                <a href="{{ url_for('main.show_transaction_category', category_id=category.id) }}"
+                                        class="flex items-center justify-between">
                                     <div class="flex items-center">
                                         <p class="px-2 py-1 mr-2 text-md leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                             帳目類別
@@ -40,7 +41,7 @@
                                         </svg>
                                         <span class="ml-1">刪除</span>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </li>
@@ -49,7 +50,8 @@
                     <li>
                         <div class="block hover:bg-gray-50">
                             <div class="px-4 py-4 sm:px-6">
-                                <div class="flex items-center justify-between">
+                                <a href="{{ url_for('main.show_item_category', category_id=category.id) }}"
+                                   class="flex items-center justify-between">
                                     <div class="flex items-center">
                                         <p class="px-2 py-1 mr-2 text-md leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                             物品類別
@@ -66,7 +68,7 @@
                                         </svg>
                                         <span class="ml-1">刪除</span>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </li>

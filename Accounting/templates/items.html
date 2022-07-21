@@ -30,9 +30,10 @@
                                     <div class="flex">
                                         <div class="flex flex-row">
                                         {% for category in item.categories %}
-                                            <p class="px-2 py-1 mr-1 text-md leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            <a href="{{ url_for('main.show_item_category', category_id=category.id) }}"
+                                                    class="px-2 py-1 mr-1 text-md leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                                 {{ category.emoji or '' }}{{ category.title }}
-                                            </p>
+                                            </a>
                                         {% endfor %}
                                         </div>
                                     <div class="bg-red-500 hover:bg-red-600 cursor-pointer w-fit flex items-center rounded-md px-2 py-1 text-white">
