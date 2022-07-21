@@ -23,15 +23,17 @@
                     <li>
                         <div class="block hover:bg-gray-50">
                             <div class="px-4 py-4 sm:px-6">
-                                <a href="{{ url_for('main.show_transaction_category', category_id=category.id) }}"
-                                        class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <p class="px-2 py-1 mr-2 text-md leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                            帳目類別
-                                        </p>
-                                        <p class="text-md font-medium text-indigo-600 truncate">{{ category.emoji or "" }} {{ category.title }}</p>
-                                    </div>
-                                    <div class="bg-red-500 hover:bg-red-600 cursor-pointer w-fit flex items-center rounded-md px-2 py-1 text-white">
+                                <div class="flex items-center justify-between">
+                                    <a href="{{ url_for('main.show_item_category', category_id=category.id) }}">
+                                        <div class="flex items-center">
+                                            <p class="px-2 py-1 mr-2 text-md leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                物品類別
+                                            </p>
+                                            <p class="text-md font-medium text-indigo-600 truncate">{{ category.emoji or "" }} {{ category.title }}</p>
+                                        </div>
+                                    </a>
+                                    <button class="bg-red-500 hover:bg-red-600 cursor-pointer w-fit flex items-center rounded-md px-2 py-1 text-white"
+                                            onclick="deleteTransactionCategory({{ category.id }})" type="button">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              class="w-5 h-5 text-white"
                                              viewBox="0 0 20 20" fill="currentColor">
@@ -40,8 +42,8 @@
                                                   clip-rule="evenodd"></path>
                                         </svg>
                                         <span class="ml-1">刪除</span>
-                                    </div>
-                                </a>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -50,15 +52,17 @@
                     <li>
                         <div class="block hover:bg-gray-50">
                             <div class="px-4 py-4 sm:px-6">
-                                <a href="{{ url_for('main.show_item_category', category_id=category.id) }}"
-                                   class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <p class="px-2 py-1 mr-2 text-md leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                            物品類別
-                                        </p>
-                                        <p class="text-md font-medium text-indigo-600 truncate">{{ category.emoji or "" }} {{ category.title }}</p>
-                                    </div>
-                                    <div class="bg-red-500 hover:bg-red-600 cursor-pointer w-fit flex items-center rounded-md px-2 py-1 text-white">
+                                <div class="flex items-center justify-between">
+                                    <a href="{{ url_for('main.show_item_category', category_id=category.id) }}">
+                                        <div class="flex items-center">
+                                            <p class="px-2 py-1 mr-2 text-md leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                                物品類別
+                                            </p>
+                                            <p class="text-md font-medium text-indigo-600 truncate">{{ category.emoji or "" }} {{ category.title }}</p>
+                                        </div>
+                                    </a>
+                                    <button class="bg-red-500 hover:bg-red-600 cursor-pointer w-fit flex items-center rounded-md px-2 py-1 text-white"
+                                            onclick="deleteItemCategory({{ category.id }})" type="button">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              class="w-5 h-5 text-white"
                                              viewBox="0 0 20 20" fill="currentColor">
@@ -67,8 +71,8 @@
                                                   clip-rule="evenodd"></path>
                                         </svg>
                                         <span class="ml-1">刪除</span>
-                                    </div>
-                                </a>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -76,4 +80,35 @@
             </ul>
         </div>
     </div>
+    <script>
+        function deleteItemCategory(id) {
+            if (window.confirm('你確定要刪除嗎？刪除之後無法復原')) {
+                $.ajax({
+                    url: '/categories/item/' + id + '/delete',
+                    type: 'POST',
+                    success: function (result) {
+                        if (result.success) {
+                            window.location.reload()
+                        }
+                    }
+                });
+            }
+            return false
+        }
+
+        function deleteTransactionCategory(id) {
+            if (window.confirm('你確定要刪除嗎？刪除之後無法復原')) {
+                $.ajax({
+                    url: '/categories/transaction/' + id + '/delete',
+                    type: 'POST',
+                    success: function (result) {
+                        if (result.success) {
+                            window.location.reload()
+                        }
+                    }
+                });
+            }
+            return false
+        }
+    </script>
 {% endblock %}

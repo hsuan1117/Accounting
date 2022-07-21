@@ -1,6 +1,6 @@
 import json
 
-from flask import Blueprint, render_template, redirect, url_for, request, abort
+from flask import Blueprint, render_template, redirect, url_for, request, abort, jsonify, flash
 from flask_login import login_required, current_user
 
 from . import db
@@ -142,6 +142,8 @@ def add_item_category_post():
 @main.route('/categories/item/<category_id>')
 @login_required
 def show_item_category(category_id):
+    if int(category_id) not in list(map(lambda b: b.id, current_user.item_categories)):
+        abort(403)
     category = ItemCategory.query.filter_by(id=category_id).first()
     items = Item.query.filter(Item.categories.any(id=category_id)).all()
     return render_template('categories/show_item_category.html', category=category, items=items)
@@ -150,9 +152,37 @@ def show_item_category(category_id):
 @main.route('/categories/transaction/<category_id>')
 @login_required
 def show_transaction_category(category_id):
+    if int(category_id) not in list(map(lambda b: b.id, current_user.transaction_categories)):
+        abort(403)
     category = TransactionCategory.query.filter_by(id=category_id).first()
     transactions = Transaction.query.filter(Transaction.categories.any(id=category_id)).all()
     return render_template('categories/show_transaction_category.html', category=category, transactions=transactions)
+
+
+@main.route('/categories/item/<category_id>/delete', methods=['POST'])
+@login_required
+def delete_item_category(category_id):
+    if int(category_id) not in list(map(lambda b: b.id, current_user.item_categories)):
+        abort(403)
+    ItemCategory.query.filter_by(id=category_id).delete()
+    db.session.commit()
+    flash('已刪除！')
+    return jsonify({
+        'success': True
+    })
+
+
+@main.route('/categories/transaction/<category_id>/delete', methods=['POST'])
+@login_required
+def delete_transaction_category(category_id):
+    if int(category_id) not in list(map(lambda b: b.id, current_user.transaction_categories)):
+        abort(403)
+    TransactionCategory.query.filter_by(id=category_id).delete()
+    db.session.commit()
+    flash('已刪除！')
+    return jsonify({
+        'success': True
+    })
 
 
 @main.route('/books/<book_id>/transactions/<transaction_id>')
