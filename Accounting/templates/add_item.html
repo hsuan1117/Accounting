@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="w-full min-h-full flex flex-col items-center py-6 px-4 bg-gray-100">
+        <div class="w-full flex justify-between items-center my-4 border-b pb-5 gap-2 border-gray-400">
+            <h3 class="text-2xl leading-6 font-medium text-gray-900">新增細項</h3>
+            <span class="font-bold p-2 bg-gray-400 rounded text-gray-100">🏧 {{ transaction.name }} </span>
+        </div>
+        <form class="space-y-8 divide-y divide-gray-200 h-full px-16 flex justify-center items-center w-full"
+              action="{{ url_for('main.add_item_post', book_id=book.id, transaction_id=transaction.id) }}"
+              method="post"
+              id="transaction_form">
+            <div class="space-y-8 divide-y divide-gray-200 flex flex-col w-full">
+                <div>
+                    <div>
+                        <h3 class="text-xl leading-6 font-medium text-gray-900">帳目設定</h3>
+                        <p class="mt-1 text-sm text-gray-500">帳目的基礎資料</p>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <div class="sm:col-span-4">
+                            <label for="name" class="block text-sm font-medium text-gray-700"> 細項名稱 </label>
+                            <div class="mt-1 flex rounded-md shadow-sm">
+                                <input type="text" name="name" id="name" class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-md sm:text-sm border-gray-300"/>
+                            </div>
+
+                            <label for="price" class="mt-2 block text-sm font-medium text-gray-700"> 細項金額 </label>
+                            <div class="mt-1 flex rounded-md shadow-sm">
+                                <input type="number" name="price" id="price" class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-md sm:text-sm border-gray-300"/>
+                            </div>
+                            <div class="mt-1 block text-sm font-medium text-gray-700"> 交易類別 </div>
+                            <p class="text-sm text-gray-500">選擇這個品項的類別</p>
+                            <div class="mt-1">
+                                {% for item_category in current_user.item_categories %}
+                                    <div class="relative flex items-center">
+                                        <div class="flex items-center h-5">
+                                            <input name="categories"
+                                                   class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                                   type="checkbox"
+                                                   value="{{ item_category.id }}"
+                                                   id="c_{{ item_category.id }}">
+                                        </div>
+                                        <div class="ml-2 text-md">
+                                            <label class="font-medium text-gray-700"
+                                                   for="c_{{ item_category.id }}">{{ item_category.emoji or '' }} {{ item_category.title }}</label>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-5">
+                    <div class="flex justify-end">
+                        <button type="submit"
+                                class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            新增
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

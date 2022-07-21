@@ -49,10 +49,9 @@ def add_book_post():
 @main.route('/books/<book_id>')
 @login_required
 def show_book(book_id):
-    book = Book.query.filter_by(id=book_id).first()
-
     if int(book_id) not in list(map(lambda b: b.id, current_user.books)):
         abort(403)
+    book = Book.query.filter_by(id=book_id).first()
 
     return render_template('transactions.html', book=book)
 
@@ -138,3 +137,49 @@ def add_item_category_post():
     db.session.commit()
 
     return redirect(url_for('main.show_categories'))
+
+
+@main.route('/books/<book_id>/transactions/<transaction_id>')
+@login_required
+def show_items(book_id, transaction_id):
+    if int(book_id) not in list(map(lambda b: b.id, current_user.books)):
+        abort(403)
+
+    book = Book.query.filter_by(id=book_id).first()
+    transaction = Transaction.query.filter_by(id=transaction_id).first()
+    return render_template('items.html', book=book, transaction=transaction)
+
+
+@main.route('/books/<book_id>/transactions/<transaction_id>/add')
+@login_required
+def add_item(book_id, transaction_id):
+    if int(book_id) not in list(map(lambda b: b.id, current_user.books)):
+        abort(403)
+
+    book = Book.query.filter_by(id=book_id).first()
+    transaction = Transaction.query.filter_by(id=transaction_id).first()
+    return render_template('add_item.html', book=book, transaction=transaction)
+
+
+@main.route('/books/<book_id>/transactions/<transaction_id>/add', methods=["POST"])
+@login_required
+def add_item_post(book_id, transaction_id):
+    if int(book_id) not in list(map(lambda b: b.id, current_user.books)):
+        abort(403)
+
+    name = request.form['name']
+    price = request.form['price']
+    new_transaction = Transaction.query.filter_by(id=transaction_id).first()
+
+    new_transaction.price = str(int(new_transaction.price) + int(price))
+
+    new_item = Item(name=name, price=price)
+    categories = map(lambda c: ItemCategory.query.filter_by(id=c).first(), request.form.getlist('categories'))
+    for c in categories: new_item.categories.append(c)
+    new_transaction.items.append(new_item)
+
+    db.session.add(new_item)
+    db.session.add(new_transaction)
+    db.session.commit()
+
+    return redirect(url_for('main.show_book', book_id=book_id))
