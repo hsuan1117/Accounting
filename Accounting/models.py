@@ -15,6 +15,7 @@ class User(UserMixin, db.Model):
     transaction_categories = db.relationship('TransactionCategory', backref='user')
     item_categories = db.relationship('ItemCategory', backref='user')
 
+
 class Book(db.Model):
     __tablename__ = 'books'
     id = db.Column(db.Integer, primary_key=True)

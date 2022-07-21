@@ -78,6 +78,9 @@ def add_transaction_post(book_id):
     items = json.loads(request.form['items'])
     for item in items:
         new_item = Item(name=item["name"], price=item["price"])
+        categories = map(lambda c: ItemCategory.query.filter_by(id=c).first(), item['categories'])
+        for c in categories: new_item.categories.append(c)
+
         new_transaction.items.append(new_item)
         new_transaction.price += int(item["price"])
 
