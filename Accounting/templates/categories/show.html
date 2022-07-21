@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="w-full h-full flex flex-col items-center py-6 px-4 sm:px-6 bg-gray-100">
-        <div class="w-full flex justify-end my-4 border-b pb-2 gap-2 pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
+        <div class="w-full flex justify-between items-center my-4 border-b pb-5 gap-2 border-gray-400">
             <h3 class="text-2xl leading-6 font-medium text-gray-900">分類列表</h3>
-            <div class="mt-3 sm:mt-0 sm:ml-4">
+            <div class="h-full flex justify-center items-center">
                 <a href="{{ url_for('main.add_transaction_category') }}"
-                   class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                   class="sm:ml-4 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     新增帳目分類
                 </a>
             </div>
