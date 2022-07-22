@@ -33,6 +33,10 @@
                         <p class="mt-1 text-gray-500 text-sm truncate">📍 {{ transaction.location }}</p>
                         <p class="mt-1 text-gray-500 text-sm truncate">💰 {{ transaction.price }}</p>
                         <p class="mt-1 text-gray-500 text-sm truncate">📅 {{ transaction.created_at }}</p>
+                        {% for field in transaction.fields|loadJSON %}
+                            <p class="mt-1 text-gray-500 text-sm truncate">{{ field[3] }} {{ field[4] }}</p>
+                        {% endfor %}
+                        
                         <p class="mt-1 text-gray-500 text-sm truncate">
                             🎁 {{ transaction.items|map(attribute='name')|join(';') or '無' }}</p>
                     </div>

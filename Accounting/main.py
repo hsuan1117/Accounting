@@ -72,7 +72,8 @@ def add_transaction_post(book_id):
         abort(403)
     name = request.form['name']
     location = request.form['location']
-    new_transaction = Transaction(name=name, location=location, price=0, book_id=book_id)
+    fields = request.form['fields']
+    new_transaction = Transaction(name=name, location=location, price=0, fields=fields, book_id=book_id)
 
     items = json.loads(request.form['items'])
     for item in items:
@@ -231,3 +232,9 @@ def add_item_post(book_id, transaction_id):
     return redirect(url_for('main.show_book', book_id=book_id))
 
 
+@main.app_template_filter()
+def loadJSON(jstr):
+    if jstr:
+        return json.loads(jstr)
+    else:
+        return []

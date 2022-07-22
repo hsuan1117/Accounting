@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block title %}新增帳目{% endblock %}
 {% block content %}
     <div class="w-full min-h-full flex flex-col items-center py-6 px-4 bg-gray-100">
         <div class="w-full flex justify-between items-center my-4 border-b pb-5 gap-2 border-gray-400">
@@ -70,7 +71,16 @@
                                 {% endfor %}
                             </div>
                         </div>
+
+                         <div class="sm:col-span-4">
+                            <div class="flex items-center gap-2">
+                                <p class="block text-sm font-medium text-gray-700"> 欄位 </p>
+                                <p class="block text-sm font-medium text-gray-700 cursor-pointer" id="add_field"> ➕ </p>
+                            </div>
+                            <div class="mt-1 flex flex-col rounded-md shadow-sm" id="fields-part"></div>
+                        </div>
                         <input type="hidden" name="items" id="items"/>
+                        <input type="hidden" name="fields" id="fields"/>
                     </div>
                 </div>
                 <div class="pt-5">
@@ -87,6 +97,7 @@
     <script>
         let current_items_cnt = 0
         let removed_item = []
+        let fields = new Set()
         $("#add_item").on("click", () => {
             current_items_cnt++
             /* Item: name price */
@@ -130,13 +141,86 @@
             `)
         })
 
+        const makeField = (event, _fieldName="欄位", _fieldType="text", _fieldEmoji="", _fieldValue="") => {
+            const fieldID = self.crypto.randomUUID()
+            fields.add(fieldID)
+            $('#fields-part').append(`
+                <div class="bg-gray-200 shadow-lg my-2 px-4 py-2 pb-4 flex flex-col" id="field_${fieldID}">
+                    <div class="mt-1 flex justify-end items-center rounded-md shadow-sm gap-2">
+                        <span class="text-sm mr-2">(ID: ${fieldID})</span>
+                        <button class="cursor-pointer inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400"
+                                onclick="duplicateField('${fieldID}')" type="button">
+                            複製
+                        </button>
+                        <button class="cursor-pointer inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                onclick="removeField('${fieldID}')" type="button">
+                            刪除
+                        </button>
+                    </div>
+                    <label for="field_${fieldID}_emoji" class="mt-2 block text-sm font-medium text-gray-700"> 欄位Emoji </label>
+                    <div class="flex rounded-md shadow-sm items-center">
+                        <input type="text" id="field_${fieldID}_emoji" value="${_fieldEmoji}" class="border-0 w-12 h-8 rounded mr-2 bg-gray-100" readonly/>
+                            <button type="button" id="field_${fieldID}_emoji_button"
+                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                選擇Emoji
+                            </button>
+                    </div>
+                    <label for="field_${fieldID}_name" class="mt-2 block text-sm font-medium text-gray-700"> 欄位名稱 </label>
+                    <div class="flex rounded-md shadow-sm">
+                        <input type="text" value="${_fieldName}" id="field_${fieldID}_name" onkeyup="editField('${fieldID}')" class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-l-md sm:text-sm border-gray-300"/>
+                    </div>
+                    <label for="field_${fieldID}_type" class="mt-2 block text-sm font-medium text-gray-700"> 欄位類別 </label>
+                    <div class="mt-1 flex rounded-md shadow-sm border-b pb-4">
+                        <select id="field_${fieldID}_type" onchange="editField('${fieldID}')" class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-md sm:text-sm border-gray-300">
+                            <option value="text" ${_fieldType==='text'?'selected':''}>文字</option>
+                            <option value="number" ${_fieldType==='number'?'selected':''}>數字</option>
+                            <option value="date" ${_fieldType==='date'?'selected':''}>日期</option>
+                            <option value="datetime" ${_fieldType==='datetime'?'selected':''}>日期時間</option>
+                        </select>
+                    </div>
+                    <label for="field_${fieldID}_value" class="mt-2 block text-lg font-medium text-indigo-500"> 欄位 </label>
+                    <div class="mt-1 flex rounded-md shadow-sm">
+                        <input type="text" id="field_${fieldID}_value" value="${_fieldValue}" class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-md sm:text-sm border-gray-300"/>
+                    </div>
+                </div>
+            `)
+
+            let popup = picmoPopup.createPopup({}, {
+                referenceElement: document.querySelector(`#field_${fieldID}_emoji_button`),
+                triggerElement: document.querySelector(`#field_${fieldID}_emoji_button`)
+            })
+            document.querySelector(`#field_${fieldID}_emoji_button`).addEventListener("click", () => {
+                popup.toggle()
+            })
+            popup.addEventListener('emoji:select', selection => {
+                document.querySelector(`#field_${fieldID}_emoji`).value = selection.emoji
+                editField(fieldID)
+            });
+        }
+
+        $("#add_field").on("click", makeField)
+
         function removeItem(index) {
             removed_item.push(index)
             $("#item_" + index).remove()
         }
 
+        function removeField(fieldID) {
+            fields.delete(fieldID)
+            $("#field_" + fieldID).remove()
+        }
+
+        function editField(fieldID) {
+            $(`label[for="field_${fieldID}_value"]`).text(` ${$(`#field_${fieldID}_emoji`).val()} ${$(`#field_${fieldID}_name`).val()} `)
+            $(`#field_${fieldID}_value`).attr('type',`${$(`#field_${fieldID}_type`).val()}`)
+        }
+
+        function duplicateField(fieldID) {
+            makeField(null, ...[$(`#field_${fieldID}_name`).val(), $(`#field_${fieldID}_type`).val(), $(`#field_${fieldID}_emoji`).val(), $(`#field_${fieldID}_value`).val()])
+        }
+
         $("#transaction_form").submit(() => {
-            let arr = []
+            let arr = [],arr2 = []
             for (let i = 1; i <= current_items_cnt; i++) {
                 if(removed_item.includes(i)) continue;
                 const name = $(`#item_${i}_name`).val(),
@@ -149,7 +233,13 @@
                     categories
                 })
             }
+
+            fields.forEach(fieldID=>{
+                arr2.push([fieldID, $(`#field_${fieldID}_name`).val(), $(`#field_${fieldID}_type`).val(), $(`#field_${fieldID}_emoji`).val(), $(`#field_${fieldID}_value`).val()])
+            })
+
             $("#items").val(JSON.stringify(arr))
+            $("#fields").val(JSON.stringify(arr2))
             return true;
         })
     </script>

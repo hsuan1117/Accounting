@@ -32,6 +32,7 @@ class Transaction(db.Model):
     book_id = db.Column(db.Integer, db.ForeignKey('books.id'))
     name = db.Column(db.String(100))
     location = db.Column(db.String(100), nullable=True)
+    fields = db.Column(db.JSON(), nullable=True)
     price = db.Column(db.String(100))
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
