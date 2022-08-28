@@ -143,8 +143,8 @@ def add_item_category_post():
 @main.route('/categories/item/<category_id>')
 @login_required
 def show_item_category(category_id):
-    if int(category_id) not in list(map(lambda b: b.id, current_user.item_categories)):
-        abort(403)
+    """if int(category_id) not in list(map(lambda b: b.id, current_user.item_categories)):
+        abort(403)"""
     category = ItemCategory.query.filter_by(id=category_id).first()
     items = Item.query.filter(Item.categories.any(id=category_id)).all()
     return render_template('categories/show_item_category.html', category=category, items=items)
@@ -153,8 +153,8 @@ def show_item_category(category_id):
 @main.route('/categories/transaction/<category_id>')
 @login_required
 def show_transaction_category(category_id):
-    if int(category_id) not in list(map(lambda b: b.id, current_user.transaction_categories)):
-        abort(403)
+    """if int(category_id) not in list(map(lambda b: b.id, current_user.transaction_categories)):
+        abort(403)"""
     category = TransactionCategory.query.filter_by(id=category_id).first()
     transactions = Transaction.query.filter(Transaction.categories.any(id=category_id)).all()
     return render_template('categories/show_transaction_category.html', category=category, transactions=transactions)
